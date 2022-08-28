@@ -1,5 +1,8 @@
 .bloop/
+.bsp/
+.idea/
 .metals/
-.vscode/
+.ninja_log
 out/
-
+.vscode/
+.vulcan/

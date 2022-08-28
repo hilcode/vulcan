@@ -1,0 +1,60 @@
+class_path = ""
+
+rule javac
+    command = javac --source-path src --class-path $class_path -d $target_dir -source 11 @$source_files
+
+rule create-jar
+    command = jar --create --file $out -C $source_dir .
+
+rule create-directory
+    command = mkdir -p $out
+
+rule create-source-files
+    command = echo $in >$out
+
+build $
+    .vulcan/main/source-files.lst $
+    : create-source-files $
+        src/org/apache/Main.java
+
+build .vulcan/main/classes/org/apache/Main.class $
+    : javac $
+            .vulcan/lib_0/assembly/lib_0.jar $
+            .vulcan/lib_1/assembly/lib_1.jar $
+            .vulcan/lib_2/assembly/lib_2.jar $
+            .vulcan/lib_3/assembly/lib_3.jar $
+            .vulcan/lib_4/assembly/lib_4.jar $
+            .vulcan/lib_5/assembly/lib_5.jar $
+            .vulcan/lib_6/assembly/lib_6.jar $
+            .vulcan/lib_7/assembly/lib_7.jar $
+            .vulcan/lib_8/assembly/lib_8.jar $
+            .vulcan/lib_9/assembly/lib_9.jar $
+            .vulcan/main/source-files.lst
+        source_files = .vulcan/main/source-files.lst
+        target_dir = .vulcan/main/classes
+        class_path = $
+            :.vulcan/lib_0/classes$
+            :.vulcan/lib_1/classes$
+            :.vulcan/lib_2/classes$
+            :.vulcan/lib_3/classes$
+            :.vulcan/lib_4/classes$
+            :.vulcan/lib_5/classes$
+            :.vulcan/lib_6/classes$
+            :.vulcan/lib_7/classes$
+            :.vulcan/lib_8/classes$
+            :.vulcan/lib_9/classes$
+
+build .vulcan/main/assembly: create-directory
+
+build .vulcan/main/classes: create-directory
+
+subninja lib_0/build.ninja
+subninja lib_1/build.ninja
+subninja lib_2/build.ninja
+subninja lib_3/build.ninja
+subninja lib_4/build.ninja
+subninja lib_5/build.ninja
+subninja lib_6/build.ninja
+subninja lib_7/build.ninja
+subninja lib_8/build.ninja
+subninja lib_9/build.ninja
